@@ -55,10 +55,18 @@ adult[adult == '?'] <- NA
 
 #checking for missing data
 library(Amelia)
-missmap(adult, legend = FALSE, col = c('yellow', 'black'))
+missmap(adult,y.at=c(1),y.labels = c(''),col=c('yellow','black'))
 
+blank.type.employer <- adult[is.na(adult$type_employer),]
+
+adult.cleaned <- adult[complete.cases(adult$occupation),]
+  
 #text to factor
 adult <- adult %>% mutate_if(is.character, as.factor)
 
 str(adult)
 summary(adult)
+
+### EDA
+library(ggplot2)
+ggplot(adult.cleaned,aes(age)) + geom_histogram(aes(fill=income),color='black',binwidth=1) + theme_bw()
